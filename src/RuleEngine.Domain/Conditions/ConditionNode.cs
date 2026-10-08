@@ -23,18 +23,25 @@ public enum ConditionNodeKind
 /// </summary>
 public sealed class ConditionNode
 {
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<ConditionNode>? All { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<ConditionNode>? Any { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public ConditionNode? Not { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Field { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Operator { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public JsonNode? Value { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? IgnoreCase { get; set; }
 
     [JsonIgnore]

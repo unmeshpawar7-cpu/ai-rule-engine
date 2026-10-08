@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using RuleEngine.Domain.Actions;
 using RuleEngine.Domain.Conditions;
 using RuleEngine.Domain.Enums;
@@ -46,18 +47,24 @@ public sealed class TraceNode
 
     public bool Result { get; init; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Field { get; init; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Operator { get; init; }
 
     /// <summary>Expected value as raw JSON.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Expected { get; init; }
 
     /// <summary>Actual fact value as raw JSON; null when the fact was absent.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Actual { get; init; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Note { get; init; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<TraceNode>? Children { get; init; }
 }
 
@@ -80,8 +87,10 @@ public sealed class RuleEvaluationTrace
 
     public bool Matched { get; init; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Error { get; init; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public TraceNode? Condition { get; init; }
 }
 

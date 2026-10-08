@@ -13,6 +13,7 @@ public sealed class RuleActionDefinition
 {
     public string Type { get; set; } = string.Empty;
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Dictionary<string, JsonElement>? Parameters { get; set; }
 
     [JsonIgnore]
