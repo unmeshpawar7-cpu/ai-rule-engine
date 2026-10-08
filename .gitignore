@@ -1,0 +1,32 @@
+# Build output
+bin/
+obj/
+out/
+publish/
+*.user
+*.suo
+.vs/
+.idea/
+.vscode/
+
+# Test / coverage
+TestResults/
+coverage/
+*.coverage
+coverage*.xml
+*.trx
+
+# Environment & secrets
+.env
+*.pfx
+appsettings.*.local.json
+
+# Local databases
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+
+# Python tooling (if used locally)
+.venv/
+__pycache__/

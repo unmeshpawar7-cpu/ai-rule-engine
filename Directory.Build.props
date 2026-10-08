@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12</LangVersion>
+    <Authors>Unmesh Pawar</Authors>
+    <Copyright>Copyright (c) 2026 Unmesh Pawar</Copyright>
+  </PropertyGroup>
+</Project>
