@@ -96,12 +96,13 @@ public class LeafOperatorEvaluatorTests
     [Fact]
     public void Catastrophic_regex_times_out_instead_of_hanging()
     {
-        var input = JsonSerializer.SerializeToElement(new string('a', 40) + "!");
+        // (a|aa)+ has exponentially many ways to split a run of 'a's; the trailing '!' forces them all to be tried.
+        var input = JsonSerializer.SerializeToElement(new string('a', 60) + "!");
         var outcome = LeafOperatorEvaluator.Evaluate(
             ConditionOperator.Matches,
             FactType.String,
             input,
-            TestData.Json("\"^(a+)+$\""),
+            TestData.Json("\"^(a|aa)+$\""),
             false,
             TimeSpan.FromMilliseconds(5));
 
