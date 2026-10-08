@@ -1,0 +1,15 @@
+{
+  "name": "IT capital expenditure needs director approval",
+  "priority": 20,
+  "condition": {
+    "all": [
+      { "field": "document.department", "operator": "Equals", "value": "IT", "ignoreCase": true },
+      { "field": "document.amount", "operator": "GreaterThanOrEqual", "value": 50000 }
+    ]
+  },
+  "actions": [
+    { "type": "SetValue", "parameters": { "field": "routing.priority", "value": "high" } },
+    { "type": "RequireApproval", "parameters": { "role": "Director" } },
+    { "type": "TriggerWorkflow", "parameters": { "workflow": "capex-review" } }
+  ]
+}

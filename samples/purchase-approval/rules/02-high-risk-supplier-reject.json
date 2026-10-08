@@ -1,0 +1,14 @@
+{
+  "name": "Reject high-risk suppliers for non-preferred vendors",
+  "priority": 5,
+  "condition": {
+    "all": [
+      { "field": "supplier.riskRating", "operator": "In", "value": ["High", "Critical"], "ignoreCase": true },
+      { "not": { "field": "supplier.preferred", "operator": "Equals", "value": true } }
+    ]
+  },
+  "actions": [
+    { "type": "Reject", "parameters": { "reason": "Supplier risk rating is High or Critical and the supplier is not preferred" } },
+    { "type": "Notify", "parameters": { "channel": "compliance", "template": "supplier-risk-rejection" } }
+  ]
+}

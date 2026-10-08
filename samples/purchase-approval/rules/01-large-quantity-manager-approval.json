@@ -1,0 +1,10 @@
+{
+  "name": "Large quantity needs manager approval",
+  "description": "Orders above 10 units are routed to a manager.",
+  "priority": 10,
+  "condition": { "field": "document.quantity", "operator": "GreaterThan", "value": 10 },
+  "actions": [
+    { "type": "RequireApproval", "parameters": { "role": "Manager", "reason": "Quantity above 10 units" } },
+    { "type": "AddTag", "parameters": { "tag": "large-order" } }
+  ]
+}

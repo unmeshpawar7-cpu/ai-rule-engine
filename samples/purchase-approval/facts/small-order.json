@@ -1,0 +1,1 @@
+{ "facts": { "document": { "quantity": 4, "amount": 380, "department": "HR", "documentType": "PurchaseOrder" }, "supplier": { "riskRating": "Low", "preferred": true } } }

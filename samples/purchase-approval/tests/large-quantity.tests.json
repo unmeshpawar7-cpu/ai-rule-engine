@@ -1,0 +1,13 @@
+[
+  {
+    "name": "25 units require manager approval",
+    "inputFacts": { "document": { "quantity": 25, "amount": 12500 } },
+    "expectedMatch": true,
+    "expectedActionTypes": ["RequireApproval", "AddTag"]
+  },
+  {
+    "name": "exactly 10 units do not",
+    "inputFacts": { "document": { "quantity": 10, "amount": 900 } },
+    "expectedMatch": false
+  }
+]

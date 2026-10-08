@@ -1,0 +1,1 @@
+{ "facts": { "document": { "quantity": 12, "amount": 9000, "department": "Facilities", "documentType": "Invoice" }, "supplier": { "riskRating": "critical", "preferred": false } } }

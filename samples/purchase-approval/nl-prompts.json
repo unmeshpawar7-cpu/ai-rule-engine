@@ -1,0 +1,11 @@
+[
+  { "text": "Documents with quantity greater than 10 should require manager approval.", "expected": "DraftSaved: document.quantity > 10 -> RequireApproval(Manager)" },
+  { "text": "If amount is at least 50000 and department is IT, require director approval and tag as high-value", "expected": "DraftSaved: all(amount >= 50000, department = IT) -> RequireApproval(Director), AddTag(high-value)" },
+  { "text": "Reject purchase orders where supplier risk rating is one of High, Critical because supplier risk is too high", "expected": "DraftSaved: supplier.riskRating in [High, Critical] -> Reject" },
+  { "text": "When amount exceeds 5000, notify procurement using the large-order template and trigger workflow vendor-review", "expected": "DraftSaved: amount > 5000 -> Notify(procurement, large-order), TriggerWorkflow(vendor-review)" },
+  { "text": "If department is HR or IT then add tag department-review", "expected": "DraftSaved: any(department = HR, department = IT) -> AddTag" },
+  { "text": "If quantity is between 10 and 20 then tag as medium-batch", "expected": "DraftSaved: quantity between [10, 20] -> AddTag" },
+  { "text": "If tags contain urgent then set routing priority to high", "expected": "DraftSaved: tags contains urgent -> SetValue(routing.priority, high)" },
+  { "text": "If colour is red then reject", "expected": "NotUnderstood (422): unknown field 'colour' - never guessed" },
+  { "text": "Make it fair for everybody", "expected": "NotUnderstood (422) offline; with LLM_PROVIDER=openai|anthropic the LLM fallback is tried and its JSON must still pass validation" }
+]

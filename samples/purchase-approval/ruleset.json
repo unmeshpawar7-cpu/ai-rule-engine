@@ -1,0 +1,18 @@
+{
+  "name": "purchase-approval",
+  "description": "Approval routing for purchase documents (quantity, amount, department, document type, supplier risk).",
+  "strategy": "AllMatches",
+  "factSchema": {
+    "fields": [
+      { "path": "document.quantity", "type": "Number", "required": true, "description": "Number of units ordered", "aliases": ["qty", "units", "number of items"] },
+      { "path": "document.amount", "type": "Number", "required": true, "description": "Order value in EUR", "aliases": ["total", "order value", "order amount", "value"] },
+      { "path": "document.department", "type": "String", "description": "Requesting department", "aliases": ["dept", "cost center"] },
+      { "path": "document.documentType", "type": "String", "description": "PurchaseOrder | Invoice | Contract", "aliases": ["doc type", "type"] },
+      { "path": "document.tags", "type": "StringList", "description": "Free-form labels from the source system" },
+      { "path": "document.dueDate", "type": "Date", "aliases": ["due date", "deadline"] },
+      { "path": "supplier.riskRating", "type": "String", "description": "Low | Medium | High | Critical", "aliases": ["supplier risk", "risk"] },
+      { "path": "supplier.preferred", "type": "Boolean", "aliases": ["preferred supplier"] },
+      { "path": "routing.priority", "type": "String", "description": "Set by rules; read by later rules" }
+    ]
+  }
+}
