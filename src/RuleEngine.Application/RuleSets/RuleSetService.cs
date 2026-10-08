@@ -67,6 +67,35 @@ public sealed class RuleSetService
         return ToDto(row);
     }
 
+    public async Task<RuleSetDto> UpdateAsync(Guid id, UpdateRuleSetRequest request, CancellationToken cancellationToken)
+    {
+        var ruleSet = await LoadTrackedAsync(id, cancellationToken);
+        EnsureStamp(ruleSet, request.ExpectedConcurrencyStamp);
+        var before = new { ruleSet.Description, ruleSet.Strategy };
+        ruleSet.UpdateDetails(request.Description, request.Strategy, Now);
+        _audit.Record(EntityType, ruleSet.Id, "Updated", before, new { ruleSet.Description, ruleSet.Strategy });
+        await _db.SaveChangesAsync(cancellationToken);
+        return await GetAsync(id, cancellationToken);
+    }
+
+    /// <summary>
+    /// Deletes an empty rule set. Rule sets that own rules or have execution history are kept for
+    /// auditability (409); deactivate them instead.
+    /// </summary>
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var ruleSet = await LoadTrackedAsync(id, cancellationToken);
+        if (await _db.Rules.AnyAsync(r => r.RuleSetId == id, cancellationToken)
+            || await _db.RuleExecutions.AnyAsync(e => e.RuleSetId == id, cancellationToken))
+        {
+            throw new ConflictException("Only rule sets without rules and without execution history can be deleted; deactivate it instead.");
+        }
+
+        _db.RuleSets.Remove(ruleSet);
+        _audit.Record(EntityType, ruleSet.Id, "Deleted", new { ruleSet.Name }, null);
+        await _db.SaveChangesAsync(cancellationToken);
+    }
+
     public async Task<RuleSetDto> UpdateSchemaAsync(Guid id, UpdateFactSchemaRequest request, CancellationToken cancellationToken)
     {
         var ruleSet = await LoadTrackedAsync(id, cancellationToken);

@@ -30,6 +30,17 @@ public sealed class UpdateFactSchemaRequest
     public Guid? ExpectedConcurrencyStamp { get; init; }
 }
 
+/// <summary>Request to update a rule set's description and evaluation strategy.</summary>
+public sealed class UpdateRuleSetRequest
+{
+    public string? Description { get; init; }
+
+    public EvaluationStrategy Strategy { get; init; } = EvaluationStrategy.AllMatches;
+
+    /// <summary>Optional optimistic-concurrency check; 409 when the rule set changed since it was read.</summary>
+    public Guid? ExpectedConcurrencyStamp { get; init; }
+}
+
 public sealed class RuleSetListQuery : PageQuery
 {
     public bool? IsActive { get; set; }
@@ -62,6 +73,15 @@ public sealed class CreateRuleSetRequestValidator : AbstractValidator<CreateRule
         RuleFor(x => x.FactSchema).NotNull();
         RuleFor(x => x.FactSchema!.Fields).NotEmpty().When(x => x.FactSchema is not null)
             .WithMessage("The fact schema must declare at least one field.");
+    }
+}
+
+public sealed class UpdateRuleSetRequestValidator : AbstractValidator<UpdateRuleSetRequest>
+{
+    public UpdateRuleSetRequestValidator()
+    {
+        RuleFor(x => x.Description).MaximumLength(RuleSet.DescriptionMaxLength);
+        RuleFor(x => x.Strategy).IsInEnum();
     }
 }
 
