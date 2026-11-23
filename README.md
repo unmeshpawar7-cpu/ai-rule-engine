@@ -330,11 +330,23 @@ dotnet test RuleEngine.sln --collect:"XPlat Code Coverage"
   publish -> activate -> execute -> execution + audit, Idempotency-Key replay/409, simulation, generation (Draft
   only, never executed), 400/404/409/422 envelopes and pagination.
 
-**Measured in CI** ([run #2](https://github.com/unmeshpawar7-cpu/ai-rule-engine/actions/runs/45161286489),
+**Measured in CI** ([run #4](https://github.com/unmeshpawar7-cpu/ai-rule-engine/actions/runs/45168433092),
 23 Nov 2026, .NET 8 on `ubuntu-latest`): **148 unit tests and 21 integration tests passed, 0 failed**, and the Docker
-image job succeeded. The code was written in an environment without the .NET SDK, so CI remains the source of truth
-for build and test status (badge above). Coverage files are uploaded as the `test-results` artifact; no coverage
-percentage is quoted here yet.
+image job succeeded.
+
+Merged unit + integration coverage is **72.8% of lines (3,624 / 4,977) and 70.5% of branches (1,211 / 1,716)**:
+
+| Assembly | Line coverage |
+|---|---|
+| RuleEngine.Domain | 87.0% |
+| RuleEngine.Application | 86.2% |
+| RuleEngine.Api | 82.1% |
+| RuleEngine.Infrastructure | 33.7% |
+
+Infrastructure is low mainly because the hand-authored EF Core migration and model snapshot are never executed: the
+tests create the SQLite schema with `EnsureCreated`. The CI job merges the Cobertura reports with ReportGenerator and
+prints this summary on every run. The code was written in an environment without the .NET SDK, so CI remains the
+source of truth for build and test status (badge above).
 
 ## Running Locally
 
