@@ -330,9 +330,11 @@ dotnet test RuleEngine.sln --collect:"XPlat Code Coverage"
   publish -> activate -> execute -> execution + audit, Idempotency-Key replay/409, simulation, generation (Draft
   only, never executed), 400/404/409/422 envelopes and pagination.
 
-**CI is the source of truth for build and test status** (badge above): the code was written in an environment
-without the .NET SDK, so test counts and coverage are reported by the GitHub Actions run (coverage files are
-uploaded as the `test-results` artifact) rather than quoted here.
+**Measured in CI** ([run #2](https://github.com/unmeshpawar7-cpu/ai-rule-engine/actions/runs/45161286489),
+23 Nov 2026, .NET 8 on `ubuntu-latest`): **148 unit tests and 21 integration tests passed, 0 failed**, and the Docker
+image job succeeded. The code was written in an environment without the .NET SDK, so CI remains the source of truth
+for build and test status (badge above). Coverage files are uploaded as the `test-results` artifact; no coverage
+percentage is quoted here yet.
 
 ## Running Locally
 
