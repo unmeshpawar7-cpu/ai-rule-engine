@@ -32,6 +32,14 @@ jobs:
           --results-directory ./TestResults
           --logger "trx;LogFilePrefix=results"
 
+      # Merge the unit + integration Cobertura reports and print one coverage figure for the whole solution.
+      - name: Coverage summary
+        run: |
+          dotnet tool install dotnet-reportgenerator-globaltool --version 5.5.12 --tool-path ./.tools
+          ./.tools/reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:coverage-report -reporttypes:"TextSummary;MarkdownSummaryGithub"
+          cat coverage-report/Summary.txt
+          cat coverage-report/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload test results and coverage
         if: always()
         uses: actions/upload-artifact@v4
