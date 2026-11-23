@@ -3,6 +3,8 @@ using RuleEngine.Application.Common;
 using RuleEngine.Domain.Entities;
 using RuleEngine.Domain.Enums;
 using RuleEngine.Domain.Facts;
+// Alias needed: inside AbstractValidator<T>, "RuleSet" binds to the inherited FluentValidation method RuleSet(string, Action).
+using RuleSetEntity = RuleEngine.Domain.Entities.RuleSet;
 
 namespace RuleEngine.Application.RuleSets;
 
@@ -67,8 +69,8 @@ public sealed class CreateRuleSetRequestValidator : AbstractValidator<CreateRule
 {
     public CreateRuleSetRequestValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(RuleSet.NameMaxLength);
-        RuleFor(x => x.Description).MaximumLength(RuleSet.DescriptionMaxLength);
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(RuleSetEntity.NameMaxLength);
+        RuleFor(x => x.Description).MaximumLength(RuleSetEntity.DescriptionMaxLength);
         RuleFor(x => x.Strategy).IsInEnum();
         RuleFor(x => x.FactSchema).NotNull();
         RuleFor(x => x.FactSchema!.Fields).NotEmpty().When(x => x.FactSchema is not null)
@@ -80,7 +82,7 @@ public sealed class UpdateRuleSetRequestValidator : AbstractValidator<UpdateRule
 {
     public UpdateRuleSetRequestValidator()
     {
-        RuleFor(x => x.Description).MaximumLength(RuleSet.DescriptionMaxLength);
+        RuleFor(x => x.Description).MaximumLength(RuleSetEntity.DescriptionMaxLength);
         RuleFor(x => x.Strategy).IsInEnum();
     }
 }
