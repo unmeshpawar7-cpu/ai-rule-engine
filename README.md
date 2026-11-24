@@ -9,6 +9,34 @@ rule tests, idempotent execution and audit, plus AI-assisted rule authoring that
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-Web%20API-512BD4)
 ![EF Core](https://img.shields.io/badge/EF%20Core-SQL%20Server-CC2927)
 
+[At a glance](#at-a-glance) · [Phases](#project-phases) · [Problem](#problem) · [Architecture](#architecture) · [Features](#key-features) · [API](#api-endpoints) · [AI design](#ai-architecture) · [Security](#security) · [Testing](#testing) · [Run locally](#running-locally) · [Docker](#docker)
+
+## At a glance
+
+| Area | Summary |
+|---|---|
+| **What it does** | Stores approval rules as versioned, validated JSON, runs them deterministically with a per-condition trace, and lets AI draft rules from plain English without ever publishing or running them |
+| **Stack** | .NET 8 · ASP.NET Core Web API · EF Core 8 · SQL Server · FluentValidation · Serilog · xUnit |
+| **AI** | Offline grammar first, optional OpenAI / Anthropic fallback; every proposal passes the same validator as manual rules and is saved only as an inactive draft |
+| **Quality** | 169 tests passing in CI (148 unit + 21 integration) · 72.8% line / 70.5% branch coverage |
+| **Security** | JWT with four roles (author, admin, executor, auditor) · PBKDF2 password hashing · regex timeouts · webhooks only to configured URLs |
+| **Run it** | `cp .env.example .env && docker compose up --build` → Swagger at `http://localhost:8080/swagger` |
+
+## Project phases
+
+How the project was built, from the problem to a deployable service. Each phase links to the details below.
+
+| # | Phase | What was delivered | Details |
+|---|---|---|---|
+| 1 | **Problem & requirements** | Policies hidden in code or spreadsheets, no record of which version approved a document, manual testing of changes, and the risk of confidently wrong AI-written rules | [Problem](#problem) |
+| 2 | **Design** | Clean Architecture (the Domain project has no package references), rules as a typed JSON condition tree instead of scripts, 4 ADRs | [Architecture](#architecture) · [ADRs](docs/adr) |
+| 3 | **Core engine** | Rule DSL with 15 typed operators, fact schemas, immutable versions (Draft → Published → Retired), deterministic evaluator with per-node traces | [Key Features](#key-features) · [Rule DSL](docs/rule-dsl.md) |
+| 4 | **Execution & API** | Idempotent execution, six action types with retry and backoff, side-effect-free simulation, rule tests with a publish gate, conflict warnings, audit log | [API Endpoints](#api-endpoints) |
+| 5 | **AI-assisted authoring** | Plain English → validated draft; versioned prompt, token accounting, per-user rate limit, nothing published automatically | [AI Architecture](#ai-architecture) |
+| 6 | **Security** | Role-based separation of duties, hashed passwords, rules that cannot execute code | [Security](#security) |
+| 7 | **Testing** | 169 tests over the domain, application and real API; 72.8% line coverage measured in CI | [Testing](#testing) |
+| 8 | **Delivery** | Multi-stage non-root Docker image, docker compose with SQL Server 2022, GitHub Actions (build, test, coverage summary, Docker build) | [Docker](#docker) |
+
 ## Problem
 
 Approval policies ("orders above 10 units need a manager", "reject critical-risk suppliers") usually live in
@@ -445,3 +473,7 @@ curl -X POST http://localhost:8080/api/rulesets/$RULE_SET_ID/execute \
   failing the whole execution.
 * **Honest trade-offs.** Conflict detection analyses conjunctive conditions only and says so; confidence scores
   are heuristic and documented as such; the migration was hand-authored and the README says how to regenerate it.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
